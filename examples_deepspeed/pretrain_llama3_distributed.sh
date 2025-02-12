@@ -10,10 +10,10 @@ rootdir="$workdir""/../.."
 #base_path="$rootdir""/checkpoints/TestModel" # see below
 #checkpoint_path="$rootdir""/checkpoints/TestModel" # see below
 #ds_config=${base_path}/deepspeed.json # see below
-dataset_1="$rootdir""/data/processed_redpajama/arxiv/arxiv_text_document"
+dataset_1="/home/G01-A100-20240605/dwc/data/processed_redpajama/arxiv/arxiv_text_document"
 dataset="1 ${dataset_1}"
-tokenizer_path="$rootdir""/tokenizers/arxiv_vs256k_msl20.model"
-vocab_path="$rootdir""/tokenizers/arxiv_vs256k_msl20.vocab"
+tokenizer_path="/home/G01-A100-20240605/dwc/tokenizers/arxiv_vs256k_msl20.model"
+vocab_path="/home/G01-A100-20240605/dwc/tokenizers/arxiv_vs256k_msl20.vocab"
 
 ######################################
 # Device Configs
@@ -42,10 +42,10 @@ num_kv_heads=8
 # Training Configs
 ###############################################################################
 ## Parallelism
-mp_size=2
+mp_size=4
 tp_size=$mp_size
 
-pp_size=2
+pp_size=4
 no_pp="false"
 
 zero_stage=1
@@ -63,7 +63,7 @@ micro_batch_size=3
 ###############################################################################
 ## Duration
 ### The main termination condition
-train_tokens_in_billion=21
+train_tokens_in_billion=0.01
 #train_tokens=$((${train_tokens_in_billion} * 1000000000))
 train_tokens=$(echo "${train_tokens_in_billion}*1000000000/1" | bc)
 
@@ -120,7 +120,7 @@ eval_interval=100
 #num_save=1 # Comment out
 estimated_train_iter=$((${train_tokens} / ${seq_length} / ${global_batch_size}))
 ### save_interval=$((${estimated_train_iter} / ${num_save}))
-save_interval=1000 # 2~3 小时存一次
+save_interval=5 # 2~3 小时存一次
 
 ### Activation checkpointing saves GPU memory, but reduces training speed
 #activation_checkpoint="true"

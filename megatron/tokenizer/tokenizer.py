@@ -47,7 +47,7 @@ def build_tokenizer(args):
     
     # Add vocab size.
     args.padded_vocab_size = _vocab_size_with_padding(tokenizer.vocab_size,
-                                                      args)
+                                                      args)+128 # BD: 唉绝世傻逼才会这么做
 
     return tokenizer
 

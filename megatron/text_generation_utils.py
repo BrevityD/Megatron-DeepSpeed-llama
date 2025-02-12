@@ -385,9 +385,11 @@ def pad_batch(batch, pad_id, args):
     context_lengths = []
     for tokens in batch:
         context_length = len(tokens)
+        # print(f">> context length: {context_length} and seq length: {args.seq_length} and pad is: {pad_id}")
         if context_length < args.seq_length:
             tokens.extend([pad_id] * (args.seq_length - context_length))
         context_lengths.append(context_length)
+    # print(f">> finally padded context length is {len(batch[0])}")
     return batch, context_lengths
 
 
@@ -462,15 +464,15 @@ def forward_step(model, tokens, position_ids, attention_mask, tokentype_ids,
         unwrapped_model.set_input_tensor(input_tensor)
     elif args.deepspeed or args.ds_inference:
         unwrapped_model.module.set_input_tensor(input_tensor)
-
+    # print(f">> and model forward with token length: {tokens.shape}")
     output_tensor = model(tokens, position_ids, attention_mask,
                           tokentype_ids=tokentype_ids,
-                          layer_past=layer_past,
-                          get_key_value=get_key_value,
-                          forward_method_parallel_output=forward_method_parallel_output)
-
-    if get_key_value:
-        output_tensor, layer_past = output_tensor
+                        #   layer_past=layer_past,
+                        #   get_key_value=get_key_value,
+                        #   forward_method_parallel_output=forward_method_parallel_output
+    )
+    # if get_key_value: # BD
+    output_tensor, layer_past = output_tensor
 
     send_forward(output_tensor)
 
@@ -513,7 +515,7 @@ def sample_sequence_batch(model, context_tokens, context_lengths,
                 maxlen = org_context_length + args.out_seq_length
 
         lengths = torch.ones([batch_size]).long().to(get_accelerator().device_name()) * maxlen
-
+        # print(f">> in sample sequence batch, the content length is: {context_length}")
         while context_length <= (maxlen):
             if args.recompute:
                 output = forward_step(model, tokens,
@@ -523,6 +525,7 @@ def sample_sequence_batch(model, context_tokens, context_lengths,
                                       forward_method_parallel_output=False)
                 if mpu.is_pipeline_last_stage():
                     assert output is not None
+                    # print(f">> the output shape is {output.shape}")#, and output is {output}")
                     logits = output[:, context_length - 1, :]
             else:
                 types2use = None

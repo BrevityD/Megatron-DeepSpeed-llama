@@ -1,0 +1,3 @@
+cd /home/G01-A100-20240605/dzj/Megatron-DeepSpeed/tools/convert_checkpoint/
+
+python deepspeed_to_megatron.py --input_folder /home/G01-A100-20240605/dwc/checkpoints/llama_tok21B_lr3e-4_min1e-6_w210M_d21B_cosine_gbs48_mbs3_g16_z1_mp2_pp2_seed42/global_step53406 --output_folder /home/G01-A100-20240605/dwc/checkpoints/llama_tok21B_lr3e-4_min1e-6_w210M_d21B_cosine_gbs48_mbs3_g16_z1_mp2_pp2_seed42/global_step53406_merged_model --target_tp 1 --target_pp 1

@@ -2,6 +2,10 @@ import os
 from typing import Dict
 import torch 
 
+import sys
+
+sys.path.append("/home/G01-A100-20240605/dzj/Megatron-DeepSpeed")
+
 ZERO_FILE_PREFIX = 'zero_pp_rank_'
 LAYER_FILE_PREFIX = 'layer_'
 MP_RANK_FILE_PREFIX = 'mp_rank_'

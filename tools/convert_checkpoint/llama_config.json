@@ -1,0 +1,17 @@
+{
+    "make-vocab-size-divisible-by": 128,
+    "model-parallel-size": 2,
+    "tokenizer_model": "/home/G01-A100-20240605/dwc/tokenizers/arxiv_vs256k_msl20.model",
+    "tokenizer-type": "SentencePieceTokenizer",
+    "hidden-size": 4096,
+    "num-layers": 6, 
+    "num-attention-heads": 32,
+    "max-position-embeddings": 8192, 
+    "num-kv-heads": 8,
+    "activation": "silu",
+    "use_bias_in_attn_linear": false,
+    "fp16": true,
+    "bf16": true,
+    "seq_length": 8192,
+    "pipe-parallel-size": 2
+}
